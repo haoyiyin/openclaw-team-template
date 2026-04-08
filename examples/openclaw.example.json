@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "template": true,
+    "description": "Sanitized OpenClaw team workflow example config"
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "custom": {
+        "baseUrl": "http://127.0.0.1:8317",
+        "apiKey": "${CUSTOM_PROVIDER_API_KEY}",
+        "api": "anthropic-messages",
+        "models": [
+          { "id": "leader-model", "name": "Leader Model", "api": "anthropic-messages" },
+          { "id": "research-model", "name": "Research Model", "api": "anthropic-messages" },
+          { "id": "coder-model", "name": "Coder Model", "api": "anthropic-messages" },
+          { "id": "reviewer-model", "name": "Reviewer Model", "api": "anthropic-messages" },
+          { "id": "writer-model", "name": "Writer Model", "api": "anthropic-messages" },
+          { "id": "tester-model", "name": "Tester Model", "api": "anthropic-messages" }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": { "primary": "custom/leader-model" },
+      "workspace": "./workspace_leader",
+      "compaction": { "mode": "safeguard" },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8,
+        "allowAgents": ["researcher", "coder", "reviewer", "writer", "tester"],
+        "runTimeoutSeconds": 2700
+      }
+    },
+    "list": [
+      {
+        "id": "leader",
+        "name": "leader",
+        "workspace": "./workspace_leader",
+        "model": "custom/leader-model",
+        "identity": { "name": "Jax", "theme": "Leader" }
+      },
+      {
+        "id": "researcher",
+        "name": "researcher",
+        "workspace": "./workspace_researcher",
+        "model": "custom/research-model",
+        "identity": { "name": "Scout", "theme": "Researcher" }
+      },
+      {
+        "id": "coder",
+        "name": "coder",
+        "workspace": "./workspace_coder",
+        "model": "custom/coder-model",
+        "identity": { "name": "Atlas", "theme": "Coder" }
+      },
+      {
+        "id": "reviewer",
+        "name": "reviewer",
+        "workspace": "./workspace_reviewer",
+        "model": "custom/reviewer-model",
+        "identity": { "name": "Critic", "theme": "Reviewer" }
+      },
+      {
+        "id": "writer",
+        "name": "writer",
+        "workspace": "./workspace_writer",
+        "model": "custom/writer-model",
+        "identity": { "name": "Vega", "theme": "Writer" }
+      },
+      {
+        "id": "tester",
+        "name": "tester",
+        "workspace": "./workspace_tester",
+        "model": "custom/tester-model",
+        "identity": { "name": "Test", "theme": "Tester" }
+      }
+    ]
+  },
+  "tools": {
+    "profile": "coding",
+    "exec": {
+      "host": "gateway",
+      "security": "full",
+      "ask": "on"
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "${GATEWAY_AUTH_TOKEN}"
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": false,
+      "accounts": {
+        "default": {
+          "botToken": "${TELEGRAM_BOT_TOKEN}"
+        }
+      }
+    }
+  }
+}

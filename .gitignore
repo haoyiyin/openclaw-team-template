@@ -1,0 +1,59 @@
+# Secrets and local config
+.env
+.env.*
+*.env
+secrets.env
+openclaw.json
+openclaw.local.json
+examples/*.local.*
+
+# Credentials / identity / device state
+credentials/
+identity/
+devices/
+telegram/
+exec-approvals.json
+
+# Runtime state
+memory/
+logs/
+cron/
+tasks/
+subagents/
+flows/
+canvas/
+media/
+qmd/
+
+# Sessions and transcript history
+agents/*/sessions/
+agents/*/qmd/sessions/
+*.jsonl
+*.deleted.*
+*.reset.*
+
+# Databases and caches
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+__pycache__/
+*.pyc
+.next/
+node_modules/
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Backup and recovery files
+*.bak
+*.clobbered.*
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
